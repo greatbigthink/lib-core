@@ -1,0 +1,15 @@
+{
+	"name": "greatbigthink/library",
+	"description": "Supporting libraries for the GBT Framework",
+	"license": "MIT",
+	"minimum-stability":"dev",
+	"require": {
+		"phroute/phroute" : "~2.0",
+		"twig/twig" : "^2.0"
+	},
+	"autoload": {
+		"psr-4":{
+			"framework\\": "src/"
+		}
+	}
+}
