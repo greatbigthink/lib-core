@@ -28,7 +28,7 @@ class app
 
 	public function engine( $engine )
 	{
-		$this->response->init($engine);
+		$this->response->init( $engine, $this );
 	}
 
 	# ================================================

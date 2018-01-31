@@ -10,12 +10,12 @@ class response
 
 	}
 
-	public function init( $engine )
+	public function init( $engine, $app )
 	{
 		if( in_array( $engine, ['twig','php']) )
 		{
 			$classname = "engine\$engine";
-			$this->engine = new $classname();
+			$this->engine = new $classname($app);
 		}
 		else
 		{
