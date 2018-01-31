@@ -23,7 +23,7 @@ class request
 
 	public function base_url()
 	{
- 		return $_SERVER[REQUEST_URI];
+ 		return $_SERVER['REQUEST_URI'];
 	}
 
 	public function original_url()

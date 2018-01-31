@@ -19,23 +19,22 @@ class app
 	public function __construct()
 	{
 		$this->request = new request();
-		$this->response = new response();
+		$this->response = new response( $this );
 		$this->router = new route_collector();
-		transformer::_load();
 	}
 
 	# ================================================
 
 	public function engine( $engine )
 	{
-		$this->response->init( $engine, $this );
+		$this->response->init( $engine );
 	}
 
 	# ================================================
 
 	public function setting( $key, $value = false )
 	{
-		if( \in_array( $key, $this->_setting) )
+		if( !$value )
 		{
 			return $this->_setting[$key];
 		}
@@ -51,8 +50,17 @@ class app
 	public function use( $path, $prefix = '' )
 	{
 		$app = $this;
-		$this->router->group(['prefix' => $prefix], function($router){
-			global $app;
+		$req = $this->request;
+		$res = $this->response;
+
+		$path = ROOT . "/$path";
+
+		if( !preg_match( "/.php$/", $path ) )
+		{
+			$path = $path . '.php';
+		}
+
+		$this->router->group(['prefix' => $prefix], function($route) use ($app, $path, $res, $req){
 			require $path;
 		});
 	}

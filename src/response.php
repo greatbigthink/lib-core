@@ -4,18 +4,19 @@ namespace framework;
 class response
 {
 	private $engine = false;
+	protected $app = false;
 
-	public function __construct()
+	public function __construct( $app )
 	{
-
+		$this->app = $app;
 	}
 
-	public function init( $engine, $app )
+	public function init( $engine )
 	{
 		if( in_array( $engine, ['twig','php']) )
 		{
-			$classname = "engine\$engine";
-			$this->engine = new $classname($app);
+			$classname = "\\framework\\engine\\$engine";
+			$this->engine = new $classname($this->app);
 		}
 		else
 		{
@@ -54,8 +55,7 @@ class response
 		{
 			echo '<td>'.$name.'</td>';
 		}
-		echo '<td><pre>', print_r($output, $as_string = true), '</pre></td></tr></tbody>';
-
+		echo '<td><pre>', print_r($output, $as_string = true), '</pre></td></tr></tbody>',
 			print_r($output, $as_string = true),
 		'</table>';
 	}

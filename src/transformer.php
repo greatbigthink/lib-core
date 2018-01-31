@@ -22,14 +22,17 @@ class transformer
 		$dir = new directory();
 		$files = $dir->rscan( $app->setting('transformer-path') );
 
-		foreach( $files as $file )
+		if( $files )
 		{
-			if( $file['type'] == 'file' && $file['ext'] == 'php' )
+			foreach( $files as $file )
 			{
-				$filename = $file['filename'];
-				$classname = "\\framework\\transformer\\$filename";
-				include_once $file['full_path'];
-				self::$library[$filename] = new $classname();
+				if( $file['type'] == 'file' && $file['ext'] == 'php' )
+				{
+					$filename = $file['filename'];
+					$classname = "\\framework\\transformer\\$filename";
+					include_once $file['full_path'];
+					self::$library[$filename] = new $classname();
+				}
 			}
 		}
 

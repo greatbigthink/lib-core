@@ -9,16 +9,14 @@ class twig
 	public function __construct( $app )
 	{
 		$this->app = $app;
-		$loader = new Twig_Loader_Filesystem( $app->setting('view-path') );
+		$loader = new \Twig_Loader_Filesystem( $this->app->setting('view-path') );
 
-		$twig = new Twig_Environment($loader, array(
-			'cache' => '/path/to/compilation_cache',
+		$twig = new \Twig_Environment($loader, array(
 			'auto_reload' => true,
-			'strict_variables' => false,
-
+			'strict_variables' => false
 		));
 
-		$this->engine = new Twig_Environment($loader);
+		$this->engine = new \Twig\Environment($loader);
 	}
 
 	public function render( $path, $params = [] )
