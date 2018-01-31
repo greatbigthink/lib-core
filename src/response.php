@@ -87,7 +87,7 @@ class response
 		exit;
 	}
 
-	public function render( $path, $params )
+	public function render( $path, $params = [] )
 	{
 		echo $this->engine->render( $path, $params );
 	}
