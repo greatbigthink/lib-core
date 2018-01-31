@@ -12,6 +12,7 @@ class request
 	{
 		$this->body = $_POST;
 		$this->params = $_GET;
+		$this->request = $_REQUEST;
 		$this->cookie = $_COOKIE;
 		$this->files = $_FILES;
 	}
