@@ -1,6 +1,6 @@
 {
-	"name": "greatbigthink/library",
-	"description": "Supporting libraries for the GBT Framework",
+	"name": "greatbigthink/lib-core",
+	"description": "Core libraries for the GBT Framework",
 	"license": "MIT",
 	"minimum-stability":"dev",
 	"require": {
