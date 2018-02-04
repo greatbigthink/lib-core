@@ -3,13 +3,15 @@ namespace framework;
 
 class request
 {
+	public $app = false;
 	public $body = [];
 	public $params = [];
 	public $cookie = [];
 	public $files = [];
 
-	public function __construct()
+	public function __construct( $app )
 	{
+		$this->app = $app;
 		$this->body = $_POST;
 		$this->params = $_GET;
 		$this->request = $_REQUEST;
@@ -19,7 +21,7 @@ class request
 
 	public function url()
 	{
-		return (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+		return (isset($_SERVER['HTTPS']) ? "https" : "http") . "://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
 	}
 
 	public function base_url()
@@ -29,12 +31,12 @@ class request
 
 	public function original_url()
 	{
-		return $_SERVER['REDIRECT_URL'];
+		return $_SERVER['REDIRECT_URL'] ?: false;
 	}
 
 	public function body( $param = '', $not_found_value = false )
 	{
-		# returns only one $_GET param, if it exists, or the $not_found_value
+		# returns only one $_POST param, if it exists, or the $not_found_value
 		if( \in_array($params, $this->body) )
 		{
 			return $this->body[$param];

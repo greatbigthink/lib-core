@@ -21,6 +21,12 @@ class twig
 
 	public function render( $path, $params = [] )
 	{
-		echo $this->engine->render( $path, $params );
+		try {
+			echo $this->engine->render( $path, $params );
+		} catch (\Exception $e) {
+			print_r($e);
+			exit;
+		}
+
 	}
 }

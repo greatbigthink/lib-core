@@ -40,24 +40,49 @@ class response
 		exit;
 	}
 
-	public function log( $output, $name = '' )
+	public function log( $output, $name = 'Unnamed' )
 	{
-		echo '<table class="framework-output-log">';
-		echo '<thead><tr><th>Timestamp</th>';
-		if( !empty($name) )
-		{
-			echo '<th>Name</th>';
-		}
-		echo '<th>Output</th></tr></thead>';
+		return "<table border=\"1\" cellpadding=\"5\" cellspacing=\"0\">
+				<thead>
+					<tr>
+						<th width=\"160\">Timestamp</th>
+						<th>Name</th>
+						<th>Output</th>
+					</tr>
+				</thead>
+				<tbody>
+					{$this->log_output($output, $name)}
+				</tbody>
+			</table>";
+	}
 
-		echo '<tbody><tr><td>'. date('Y-m-d H:i:s') .'</td>';
-		if( !empty($name) )
+	private function log_output( $output, $name = 'Unnamed' )
+	{
+		$date = date('Y-m-d H:i:s');
+		$date = \str_replace(' ', '&nbsp;', $date);
+		$date = \str_replace('-', '&#8209;', $date);
+		$return = '';
+		if( \is_array($output) )
 		{
-			echo '<td>'.$name.'</td>';
+			foreach( $output as $key => $value )
+			{
+				$return .= "<tr>
+					<td>$date</td>
+					<td>$key</td>
+					<td>$value</td>
+				</tr>";
+			}
 		}
-		echo '<td><pre>', print_r($output, $as_string = true), '</pre></td></tr></tbody>',
-			print_r($output, $as_string = true),
-		'</table>';
+		else
+		{
+			$return .= "<tr>
+				<td>$date</td>
+				<td>$name</td>
+				<td>$output</td>
+			</tr>";
+		}
+
+		return $return;
 	}
 
 	public function debug( $output )
@@ -74,10 +99,15 @@ class response
 		'</pre>';
 	}
 
-	public function send_code( $code )
+	public function status( $code )
 	{
 		http_response_code($code);
 		return $this;
+	}
+
+	public function send_code( $code )
+	{
+		return $this->status($code);
 	}
 
 	public function send( $array )
@@ -89,6 +119,7 @@ class response
 
 	public function render( $path, $params = [] )
 	{
+		$params['app'] = $this->app;
 		echo $this->engine->render( $path, $params );
 	}
 
