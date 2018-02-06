@@ -10,13 +10,12 @@ class twig
 	{
 		$this->app = $app;
 		$loader = new \Twig_Loader_Filesystem( $this->app->setting('view-path') );
-
-		$twig = new \Twig_Environment($loader, array(
+		$this->engine = new \Twig_Environment($loader, array(
+			'debug' => true,
 			'auto_reload' => true,
 			'strict_variables' => false
 		));
-
-		$this->engine = new \Twig\Environment($loader);
+		$this->engine->addExtension(new \Twig_Extension_Debug());
 	}
 
 	public function render( $path, $params = [] )
