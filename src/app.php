@@ -13,13 +13,13 @@ class app
 
 	protected $routes = [];
 	public $router = false;
-	public $req = false;
-	public $res = false;
+	public $request = false;
+	public $response = false;
 
 	public function __construct()
 	{
-		$this->req = new request( $this );
-		$this->res = new response( $this );
+		$this->request = new request();
+		$this->response = new response( $this );
 		$this->router = new route_collector();
 	}
 
@@ -27,7 +27,7 @@ class app
 
 	public function engine( $engine )
 	{
-		$this->res->init( $engine );
+		$this->response->init( $engine );
 	}
 
 	# ================================================
@@ -50,8 +50,8 @@ class app
 	public function use( $path, $prefix = '' )
 	{
 		$app = $this;
-		$req = $this->req;
-		$res = $this->res;
+		$req = $this->request;
+		$res = $this->response;
 
 		$path = ROOT . "/$path";
 
@@ -60,7 +60,7 @@ class app
 			$path = $path . '.php';
 		}
 
-		$this->router->group(['prefix' => $prefix], function($route) use ($app, $path, $res, $req, $prefix){
+		$this->router->group(['prefix' => $prefix], function($route) use ($app, $path, $res, $req){
 			require $path;
 		});
 	}
@@ -86,7 +86,7 @@ class app
 		try
 		{
 			$dispatcher = new dispatcher( $this->router->getData() );
-			$results = $dispatcher->dispatch( $this->req->method(), parse_url($this->req->base_url(), PHP_URL_PATH) );
+			$results = $dispatcher->dispatch( $this->request->method(), parse_url($this->request->base_url(), PHP_URL_PATH) );
 		}
 		catch( \Exception $e )
 		{
@@ -99,6 +99,7 @@ class app
 					http_response_code(403);
 					break;
 				default:
+					print_r($e);
 					http_response_code(400);
 					break;
 			}

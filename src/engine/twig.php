@@ -10,22 +10,20 @@ class twig
 	{
 		$this->app = $app;
 		$loader = new \Twig_Loader_Filesystem( $this->app->setting('view-path') );
-		$this->engine = new \Twig_Environment($loader, array(
-			'debug' => true,
+
+		$twig = new \Twig_Environment($loader, array(
 			'auto_reload' => true,
-			'strict_variables' => false
+			'strict_variables' => false,
+			'debug' => true
 		));
-		$this->engine->addExtension(new \Twig_Extension_Debug());
+
+		$twig->addExtension(new \Twig_Extension_Debug());
+
+		$this->engine = $twig;
 	}
 
 	public function render( $path, $params = [] )
 	{
-		try {
-			echo $this->engine->render( $path, $params );
-		} catch (\Exception $e) {
-			print_r($e);
-			exit;
-		}
-
+		echo $this->engine->render( $path, $params );
 	}
 }
