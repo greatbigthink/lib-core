@@ -43,6 +43,7 @@ class session
 		self::set( 'session_id', self::$id );
 		self::set( 'ip_address', $_SERVER['REMOTE_ADDR'] );
 		self::set( 'user_agent', $_SERVER['HTTP_USER_AGENT'] );
+		self::set( 'request_uri', $_SERVER['REQUEST_URI'] );
 
 		if( is_null( $user = self::get('user') ) )
 		{
